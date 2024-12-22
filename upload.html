@@ -1,1 +1,57 @@
-/var/www/html/upload.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <style>
+        #drop_zone {
+            border: 2px dashed #0087F7;
+            padding: 50px;
+            width: 300px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        #file_input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="drop_zone">Drop files here</div>
+    <form id="upload_form" action="/cgi-bin/upload.py" method="post" enctype="multipart/form-data">
+        <input type="file" id="file_input" name="file">
+        <button type="button" id="browse_button">Browse</button>
+	<!-- button type="submit">Upload</button> -->
+        <button type="submit" name="eject">Eject</button>
+        <button type="submit" name="Refresh">Refresh</button>
+    </form>
+    <script>
+        const dropZone = document.getElementById('drop_zone');
+        const fileInput = document.getElementById('file_input');
+        const browseButton = document.getElementById('browse_button');
+        const uploadForm = document.getElementById('upload_form');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#00F';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.borderColor = '#0087F7';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#0087F7';
+            fileInput.files = e.dataTransfer.files;
+            uploadForm.submit();
+        });
+
+        browseButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            uploadForm.submit();
+        });
+    </script>
